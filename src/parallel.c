@@ -39,8 +39,7 @@ testing(void *x)
     data->state->gmp_init = 1;
     gmp_randseed_ui(data->state->gmp_state, 12345 + 1 + data->id);
 
-    //fmpz_init_set_ui(A, 123);
-    //fmpz_init_set_ui(B, data->id);
+
     fmpz_init(n);
     int i = data->id;
 
@@ -50,20 +49,8 @@ testing(void *x)
         fmpz_randm(A, data->state, data->p);
         fmpz_randm(B, data->state, data->p);
 
-        //fmpz_add_ui(B, B, NTHREADS);
-
-        //printf("[%d] ", data->id); fmpz_print(B); printf(" "); fflush(stdout);
-
-        //printf("** %d **", i);
-
-        //tic(30 + data->id);
-        //fmpz_randm(n, data->state, data->p);
         if (SEA_simple(n, data->p, A, B) == 0)
         {
-
-            //tac(30 + data->id); fflush(stdout);
-
-            //printf("N%d = ",i); fmpz_print(n); printf("\n");
 
             if (fmpz_is_probabprime(n))
             {
@@ -124,7 +111,6 @@ testing(void *x)
 
                     pthread_mutex_unlock(&file_mutex);
 
-                    //*(data->isInterrupted) = 1;
                 }
                 else
                 {
@@ -169,9 +155,8 @@ main(int argc, char *argv[])
     fmpz_set_ui(n, 2);
     fmpz_pow_ui(n, n, 100);
 
-    //nextGoodPrime(p,p,n);
-    fmpz_set_str(p, "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc31", 16);    // 512
-    //fmpz_set_str(p, "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f", 16); // 256
+    //fmpz_set_str(p, "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc31", 16);    // 512
+    fmpz_set_str(p, "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f", 16); // 256
     //fmpz_set_str(p, "ffffffffffffffffffffffffffffffffffffffb5", 16); // 160
     //fmpz_set_str(p, "ffffffffffffffffffffffffffff89", 16); // 120
     //fmpz_set_str(p, "ffffffffffffffffffbf", 16); // 80

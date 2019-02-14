@@ -9,6 +9,6 @@
 
 #define PATH_ATKIN "./build/data/phi_atkin/phi_a%d.txt"
 
-#define TALKATIVE 10
+#define TALKATIVE 0
 
 #endif /* SEA_PARAMS_H */

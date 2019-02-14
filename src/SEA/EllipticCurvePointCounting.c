@@ -1437,8 +1437,11 @@ findTrace_Elkies_ramified(const int l,
     fmpz_init(tmp);
 
     int p_l = fmpz_mod_ui(tmp, curve->p, l);
+    
+    // TODO: PROBLEM: if p_l is not a square residue mod l, then tl_guess = 0, BUG
 
     tl_guess = n_sqrtmod((4*p_l)%l, l);
+
     int lambda = (tl_guess * n_invmod(2, l))%l;
     
     fmpz_clear(tmp);
@@ -2584,6 +2587,7 @@ computeBSGSBound(fmpz_t bsgsBound, const fmpz_t p)
 /*
  * Returns -2 in case of error, -1 in case of early abort, 0 if the cardinality
  * has been computed
+ * TODO: algorithm not implemented for j-invariants 0 and 1728!!
  */
 
 int
@@ -2675,6 +2679,12 @@ SEA_AtkinPolynomials(fmpz_t cardinality, const EllipticCurve * curve,
             fmpz_clear(j1);
             return -2;
         }
+
+        fmpz_mod(j1, j1, curve->p);
+        fmpz_sub_ui(tmp, j1, 1728);
+
+        if (fmpz_is_zero(j1) || fmpz_is_zero(tmp))
+            return -2; // TODO: algorithm not implemented for j-invariants 0 and 1728!!
 
         fmpz_init(traceElkies);
         fmpz_init(tmp);
@@ -2861,7 +2871,6 @@ SEA_AtkinPolynomials(fmpz_t cardinality, const EllipticCurve * curve,
                                     ln *= primes[i].l;
                             }
                         }
-
                         tl = findTrace_Elkies(splittingPart, primes[i].modular,
                                                   exponent, divPolys, psi_j1, j1,
                                                   curve, twist_secure);
@@ -2874,8 +2883,6 @@ SEA_AtkinPolynomials(fmpz_t cardinality, const EllipticCurve * curve,
                         fmpz_init(j2);
                         fmpz_mod_poly_t h;
                         fmpz_mod_poly_init(h, curve->p);
-                        
-
 
                         if (TALKATIVE >= 3)
                             tic(15);
